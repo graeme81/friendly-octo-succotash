@@ -19,7 +19,7 @@ def increase_pets_sold(psname, sales_num)
 end
 
 def stock_count(psname)
-  count =0
+  count = 0
   for num in psname[:pets]
     count += 1
   end
@@ -37,21 +37,18 @@ def pets_by_breed(psname, breed)
 end
 
 def find_pet_by_name(psname, pname)
-  hash = {}
-  for num in psname[:pets]
-    if num [:name] == pname
-      hash = {name: pname}
-      return hash
-    #end 
+  for pet in psname[:pets]
+    if pet [:name] == pname
+      return pet
     end
   end
   return nil
 end
 
 def remove_pet_by_name(psname, pname)
-  for num in psname[:pets]
-    if num[:name] == pname
-      psname[:pets].delete(num)
+  for pet in psname[:pets]
+    if pet[:name] == pname
+      psname[:pets].delete(pet)
     end
   end
 end
@@ -69,5 +66,23 @@ def customer_pet_count(customer)
 end
 
 def add_pet_to_customer(customer, pet)
-  customer[:pets] <<  pet
+  customer[:pets] << pet
+end
+
+def customer_can_afford_pet(customer, pet)
+  money = customer[:cash]
+  cost = pet[:price]
+
+  money >= cost ? true : false
+
+end
+
+def sell_pet_to_customer(psname, pet, customer)
+
+  if pet != nil && customer_can_afford_pet(customer, pet) == true
+
+    add_pet_to_customer(customer,pet)
+    increase_pets_sold(psname, 1)
+    add_or_remove_cash(psname,pet[:price])
+  end
 end
